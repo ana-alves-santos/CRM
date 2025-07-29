@@ -1,0 +1,26 @@
+{
+  "clientes": [
+    {
+      "name": "Ana Carolina Alves dos Santos",
+      "adress": "Comendador Vicente Lentini - Cambuci",
+      "complement": "Apto 13",
+      "zipCode": "01527-070",
+      "city": "São Paulo",
+      "state": "SP",
+      "email": "annaalves622@gmail.com",
+      "phone": "(11) 99014-2886",
+      "id": 1
+    },
+    {
+      "name": "Luciana Alves da Rosa",
+      "adress": "Rua Ernesto Guilherme Rizzi - Higienópolis",
+      "complement": "Apto 90",
+      "zipCode": "13417-170",
+      "city": "Piracicaba",
+      "state": "SP",
+      "email": "lucianarosa@gmail.com",
+      "phone": "(11) 98644-0999",
+      "id": 2
+    }
+  ]
+}

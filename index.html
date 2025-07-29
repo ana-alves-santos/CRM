@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRM - Sistema de Gestão de Clientes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>CRM - Sistema de Gestão de Clientes</h1>
+
+    <form id="formCliente">
+      <input type="text" id="nome" placeholder="Nome" required />
+      <input type="text" id="adress" placeholder="Endereço" required />
+      <input type="text" id="complement" placeholder="Complemento" />
+      <input type="text" id="zipCode" placeholder="CEP" required />
+      <input type="text" id="city" placeholder="Cidade" required />
+      <input type="text" id="state" placeholder="Estado" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="phone" placeholder="Telefone" required />
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Endereço</th>
+          <th>Complemento</th>
+          <th>CEP</th>
+          <th>Cidade</th>
+          <th>Estado</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaClientes"></tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
