@@ -12,7 +12,7 @@ This is a CRM system built to practice AJAX with the Fetch API.
 - Load customer list dynamically using AJAX.
 - Delete and Edit customers
 - Basic input validation with visual feedback.
-- 
+
 
 ##  🛠️ Technologies Used
 
