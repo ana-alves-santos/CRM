@@ -24,25 +24,21 @@ class Formatter {
 
 const formatter = new Formatter();
 
-// Funções de validação
 function validarEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email.toLowerCase());
 }
 
 function validarTelefone(phone) {
-  // Exemplo: (99) 99999-9999 ou (99) 9999-9999
   const re = /^\(\d{2}\) \d{4,5}-\d{4}$/;
   return re.test(phone);
 }
 
 function validarCep(cep) {
-  // Formato 99999-999
   const re = /^\d{5}-\d{3}$/;
   return re.test(cep);
 }
 
-// Carrega clientes e monta tabela
 function carregarClientes() {
   fetch(API_URL)
     .then((res) => {
@@ -50,39 +46,51 @@ function carregarClientes() {
       return res.json();
     })
     .then((clientes) => {
-      tabela.innerHTML = "";
-      clientes.forEach((cliente) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${cliente.name}</td>
-          <td>${cliente.adress}</td>
-          <td>${cliente.complement}</td>
-          <td>${cliente.zipCode}</td>
-          <td>${cliente.city}</td>
-          <td>${cliente.state}</td>
-          <td>${cliente.email}</td>
-          <td>${cliente.phone}</td>
-          <td><button class="btn-excluir" data-id="${cliente.id}">Excluir</button></td>
-        `;
-        tabela.appendChild(tr);
-      });
-
-      // Evento para excluir cliente
-      document.querySelectorAll(".btn-excluir").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const id = e.target.getAttribute("data-id");
-          excluirCliente(id);
-        });
-      });
+      montarTabela(clientes);
     })
     .catch((error) => {
       console.error("Falha ao carregar clientes:", error);
     });
 }
 
+function montarTabela(clientes) {
+  tabela.innerHTML = "";
+  clientes.forEach((cliente) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${cliente.name}</td>
+      <td>${cliente.adress}</td>
+      <td>${cliente.complement}</td>
+      <td>${cliente.zipCode}</td>
+      <td>${cliente.city}</td>
+      <td>${cliente.state}</td>
+      <td>${cliente.email}</td>
+      <td>${cliente.phone}</td>
+      <td>
+        <button class="btn-editar" data-id="${cliente.id}">Editar</button>
+        <button class="btn-excluir" data-id="${cliente.id}">Excluir</button>
+      </td>
+    `;
+    tabela.appendChild(tr);
+  });
+
+  document.querySelectorAll(".btn-excluir").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const id = e.target.getAttribute("data-id");
+      excluirCliente(id);
+    });
+  });
+
+  document.querySelectorAll(".btn-editar").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const id = e.target.getAttribute("data-id");
+      editarCliente(id);
+    });
+  });
+}
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-
   formatter.clearAllErrors();
 
   const novoCliente = {
@@ -98,43 +106,30 @@ form.addEventListener("submit", (e) => {
 
   let valid = true;
 
-  // Validação nome
   if (!novoCliente.name || novoCliente.name.length < 3) {
     formatter.formatError("#nome");
     valid = false;
   }
-
-  // Validação endereço obrigatório
   if (!novoCliente.adress) {
     formatter.formatError("#adress");
     valid = false;
   }
-
-  // CEP
   if (!validarCep(novoCliente.zipCode)) {
     formatter.formatError("#zipCode");
     valid = false;
   }
-
-  // Cidade obrigatório
   if (!novoCliente.city) {
     formatter.formatError("#city");
     valid = false;
   }
-
-  // Estado obrigatório
   if (!novoCliente.state) {
     formatter.formatError("#state");
     valid = false;
   }
-
-  // Email formato válido
   if (!validarEmail(novoCliente.email)) {
     formatter.formatError("#email");
     valid = false;
   }
-
-  // Telefone formato válido
   if (!validarTelefone(novoCliente.phone)) {
     formatter.formatError("#phone");
     valid = false;
@@ -145,9 +140,12 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  // Envia para API
-  fetch(API_URL, {
-    method: "POST",
+  const idEdicao = form.getAttribute("data-editing-id");
+  const method = idEdicao ? "PUT" : "POST";
+  const url = idEdicao ? `${API_URL}/${idEdicao}` : API_URL;
+
+  fetch(url, {
+    method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(novoCliente),
   })
@@ -157,6 +155,8 @@ form.addEventListener("submit", (e) => {
     })
     .then(() => {
       form.reset();
+      form.removeAttribute("data-editing-id");
+      form.querySelector("button").textContent = "Adicionar";
       carregarClientes();
     })
     .catch((error) => {
@@ -164,13 +164,10 @@ form.addEventListener("submit", (e) => {
     });
 });
 
-// Função para excluir cliente pelo ID
 function excluirCliente(id) {
   if (!confirm("Tem certeza que deseja excluir este cliente?")) return;
 
-  fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  })
+  fetch(`${API_URL}/${id}`, { method: "DELETE" })
     .then((res) => {
       if (!res.ok) throw new Error(`Erro ao excluir cliente: ${res.status}`);
       carregarClientes();
@@ -179,5 +176,24 @@ function excluirCliente(id) {
       console.error("Falha ao excluir cliente:", error);
     });
 }
+
+function editarCliente(id) {
+  fetch(`${API_URL}/${id}`)
+    .then((res) => res.json())
+    .then((cliente) => {
+      document.getElementById("nome").value = cliente.name;
+      document.getElementById("adress").value = cliente.adress;
+      document.getElementById("complement").value = cliente.complement;
+      document.getElementById("zipCode").value = cliente.zipCode;
+      document.getElementById("city").value = cliente.city;
+      document.getElementById("state").value = cliente.state;
+      document.getElementById("email").value = cliente.email;
+      document.getElementById("phone").value = cliente.phone;
+
+      form.setAttribute("data-editing-id", id);
+      form.querySelector("button").textContent = "Atualizar";
+    });
+}
+
 
 carregarClientes();

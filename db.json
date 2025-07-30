@@ -1,26 +1,37 @@
 {
   "clientes": [
     {
-      "name": "Ana Carolina Alves dos Santos",
-      "adress": "Comendador Vicente Lentini - Cambuci",
-      "complement": "Apto 13",
-      "zipCode": "01527-070",
+      "name": "Ana Alves",
+      "adress": "Comendador Vicente Lentini 56",
+      "complement": "Apartamento 90",
+      "zipCode": "13417-170",
       "city": "São Paulo",
       "state": "SP",
-      "email": "annaalves622@gmail.com",
-      "phone": "(11) 99014-2886",
+      "email": "anaalves622@gmail.com",
+      "phone": "(11) 99014-2877",
       "id": 1
     },
     {
-      "name": "Luciana Alves da Rosa",
-      "adress": "Rua Ernesto Guilherme Rizzi - Higienópolis",
-      "complement": "Apto 90",
-      "zipCode": "13417-170",
+      "name": "Paulo Henrique",
+      "adress": "Rua Ernesto Guilherme Rizzi 899",
+      "complement": "Casa 2",
+      "zipCode": "13417-155",
       "city": "Piracicaba",
       "state": "SP",
-      "email": "lucianarosa@gmail.com",
-      "phone": "(11) 98644-0999",
+      "email": "paulohenrique@gmail.com",
+      "phone": "(11) 93314-2111",
       "id": 2
+    },
+    {
+      "name": "Luciana Rosa",
+      "adress": "Rua Grajaú 567",
+      "complement": "Apartamento 55",
+      "zipCode": "65605-325",
+      "city": "Caxias",
+      "state": "MA",
+      "email": "lucianarosa@gmail.com",
+      "phone": "(11) 99114-2346",
+      "id": 3
     }
   ]
 }

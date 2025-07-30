@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-  max-width: 1500px;
+  max-width: 1680px;
   margin: 40px auto;
   background: white;
   padding: 20px;
@@ -19,7 +19,7 @@ form {
 }
 
 input {
-  flex: 1 1 200px;
+  flex: 10px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -54,10 +54,8 @@ td, th {
   padding: 10px;
   border: 1px solid #ccc;
   text-align: left;
-  word-wrap: break-word;
 }
 
-/* Botão excluir */
 .btn-excluir {
   background-color: #e74c3c;
   color: white;
@@ -72,7 +70,21 @@ td, th {
   background-color: #c0392b;
 }
 
-/* Classe para inputs com erro */
+.btn-editar {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.btn-editar:hover {
+  background-color: #d68910;
+}
+
 .input-error {
   border: 2px solid #e74c3c !important;
   background-color: #fceae9 !important;
