@@ -2,15 +2,17 @@
 
 This is a CRM system built to practice AJAX with the Fetch API.
 
-<img width="1348" height="582" alt="image" src="https://github.com/user-attachments/assets/6a57ba51-37b0-46f8-91d0-14235769d2d2" />
+<img width="1364" height="423" alt="image" src="https://github.com/user-attachments/assets/481c31a4-9935-4c5e-888b-80ce3a6d1092" />
+
 
 
 ## ✨ Features
 
 - Add new customers with name, address, email, phone, etc.
 - Load customer list dynamically using AJAX.
-- Delete customers with a confirmation prompt.
+- Delete and Edit customers
 - Basic input validation with visual feedback.
+- 
 
 ##  🛠️ Technologies Used
 
