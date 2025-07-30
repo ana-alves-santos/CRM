@@ -16,7 +16,7 @@ This is a CRM system built to practice AJAX with the Fetch API.
 
 - HTML5, CSS3, JavaScript 
 - Fetch API for AJAX requests
-- JSON Server or any REST API backend
+- JSON Server 
 
 ##  How to Run
 
