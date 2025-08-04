@@ -1,4 +1,4 @@
-# 🧩 CRM Project - AJAX Practice
+# 🧩 CRM Project
 
 This is a CRM system built to practice AJAX with the Fetch API.
 
