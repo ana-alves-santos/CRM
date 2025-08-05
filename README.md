@@ -1,6 +1,6 @@
 # 🧩 CRM Project
 
-This is a CRM system built to practice AJAX with the Fetch API.
+This is a CRM system built to practice Fetch API.
 
 <img width="1364" height="423" alt="image" src="https://github.com/user-attachments/assets/481c31a4-9935-4c5e-888b-80ce3a6d1092" />
 
@@ -17,7 +17,7 @@ This is a CRM system built to practice AJAX with the Fetch API.
 ##  🛠️ Technologies Used
 
 - HTML5, CSS3, JavaScript 
-- Fetch API for AJAX requests
+- Fetch API for requests
 - JSON Server 
 
 ##  How to Run
