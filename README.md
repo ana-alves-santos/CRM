@@ -3,7 +3,7 @@
 converter web app created to practice and demonstrate working with APIs
 
 <p align="">
-  <a href="https://ana-alves-santos.github.io/calculator-js/"target="_blank">
+  <a href="https://ana-alves-santos.github.io/currency-converter/"target="_blank">
     click here to test
   </a>
 </p>
