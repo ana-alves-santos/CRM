@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conversor de Moedas</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+  <h1>💱 Conversor de Moedas</h1>
+
+  <form id="formConverter">
+    <input type="number" id="valor" placeholder="Digite o valor" min="0" step="any" autocomplete="off" required />
+
+    <div class="actions">
+      <select id="moedaOrigem" aria-label="Moeda de origem"></select>
+      <button type="button" id="btnInvert">↔️</button>
+      <select id="moedaDestino" aria-label="Moeda de destino"></select>
+    </div>
+
+    <button id="btnConverter" type="submit">Converter</button>
+  </form>
+
+  <div id="resultado" aria-live="polite" role="region"></div>
+  <p id="infoTaxa"></p>
+
+  <div class="history" aria-live="polite" aria-atomic="true" role="log" id="history">
+    <h2>Histórico de conversões</h2>
+    <ul id="historyList"></ul>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
