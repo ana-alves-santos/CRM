@@ -1,4 +1,3 @@
-/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -22,7 +21,7 @@ body {
   min-height: 100vh;
 }
 
-/* Container principal */
+
 .painelCripto {
   background: #1f2235;
   border-radius: 10px;
@@ -34,7 +33,7 @@ body {
   padding: 20px;
 }
 
-/* Menu lateral */
+
 .menuLateral {
   flex: 0 0 300px;
   background: #24293e;
@@ -51,7 +50,7 @@ body {
   font-size: 1.3rem;
 }
 
-/* Campo de busca */
+
 .filtroMoedas {
   padding: 9px 12px;
   border-radius: 6px;
@@ -67,7 +66,7 @@ body {
   outline: none;
 }
 
-/* Lista de moedas */
+
 .listaCripto {
   list-style: none;
   flex-grow: 1;
@@ -105,7 +104,7 @@ body {
   border-bottom: none;
 }
 
-/* Conteúdo principal */
+
 .conteudoPrincipal {
   flex: 1;
   display: flex;
@@ -114,7 +113,7 @@ body {
   overflow: hidden;
 }
 
-/* Cabeçalho */
+
 .cabecalho {
   flex-shrink: 0;
 }
@@ -129,7 +128,7 @@ body {
   color: #a4a7b7;
 }
 
-/* Painéis */
+
 .painel {
   background: #24293e;
   border-radius: 10px;
@@ -139,9 +138,9 @@ body {
   flex-direction: column;
 }
 
-/* Painel gráfico maior */
+
 .painelGrafico {
-  flex-grow: 1; /* Ajustado para ocupar mais espaço após remoção das estatísticas */
+  flex-grow: 1; 
 }
 
 .painelGrafico canvas {
