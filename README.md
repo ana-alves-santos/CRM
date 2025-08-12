@@ -15,7 +15,7 @@ converter web app created to practice and demonstrate working with APIs
 - Convert amounts between various world currencies.
 - Real-time exchange rates from a public API.
 - Dark mode, clean, and responsive UI.
-- Conversion history saved locally (localStorage) with up to 10 records.
+- Conversion history saved locally
 - Quick swap button to invert source and target currencies.
 
 ## 🛠️ Technologies Used
