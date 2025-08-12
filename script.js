@@ -95,7 +95,6 @@ async function carregarGrafico(idMoeda, simboloMoeda) {
 async function iniciar() {
   const dados = await obterDadosMercado();
   if (!dados.length) {
-    // Como removemos o painel de estatísticas, mostramos o erro aqui na lista:
     listaMoedasEl.innerHTML = '<li>Não foi possível carregar dados.</li>';
     return;
   }
