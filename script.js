@@ -1,136 +1,115 @@
-// URL da API que traz as taxas de câmbio
-const API_BASE = "https://api.exchangerate-api.com/v4/latest/";
+const ctx = document.getElementById('grafico').getContext('2d');
+const listaMoedasEl = document.getElementById('coinList');
+const filtroMoedas = document.getElementById('searchInput');
 
-// Pega os elementos do HTML q
-const form = document.getElementById("formConverter");
-const valorInput = document.getElementById("valor");
-const moedaOrigem = document.getElementById("moedaOrigem");
-const moedaDestino = document.getElementById("moedaDestino");
-const btnConverter = document.getElementById("btnConverter");
-const btnInvert = document.getElementById("btnInvert");
-const resultado = document.getElementById("resultado");
-const infoTaxa = document.getElementById("infoTaxa");
-const historyList = document.getElementById("historyList");
+let graficoLinha;
+let dadosMercado = [];
 
-const STORAGE_KEY = "meuHistoricoDeConversoes";
+async function obterDadosMercado() {
+  if (dadosMercado.length) return dadosMercado;
 
-// Função pra puxar as moedas e colocar nos selects
-async function carregaAsMoedas() {
   try {
-    const res = await fetch(API_BASE + "USD");
-    const dados = await res.json();
-    const moedas = Object.keys(dados.rates).sort();
-
-    moedaOrigem.innerHTML = "";
-    moedaDestino.innerHTML = "";
-
-    moedas.forEach((moeda) => {
-      moedaOrigem.innerHTML += `<option value="${moeda}">${moeda}</option>`;
-      moedaDestino.innerHTML += `<option value="${moeda}">${moeda}</option>`;
-    });
-
-    moedaOrigem.value = "USD";
-    moedaDestino.value = "BRL";
-
-    carregarHistorico();
-  } catch (e) {
-    resultado.textContent = "Deu ruim ao carregar as moedas ";
+    const resposta = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h');
+    if (!resposta.ok) throw new Error('Erro ao buscar dados do mercado');
+    dadosMercado = await resposta.json();
+    return dadosMercado;
+  } catch (erro) {
+    console.error(erro);
+    return [];
   }
 }
 
-//  localStorage
-function salvaHistorico(lista) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
-}
-
-
-function carregarHistorico() {
-  const historicoSalvo = localStorage.getItem(STORAGE_KEY);
-  if (historicoSalvo) {
-    const lista = JSON.parse(historicoSalvo);
-    historyList.innerHTML = "";
-    lista.forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      historyList.appendChild(li);
-    });
+async function obterDadosHistoricos(idMoeda) {
+  try {
+    const resposta = await fetch(`https://api.coingecko.com/api/v3/coins/${idMoeda}/market_chart?vs_currency=usd&days=7&interval=daily`);
+    if (!resposta.ok) throw new Error('Erro ao buscar dados');
+    return await resposta.json();
+  } catch (erro) {
+    console.error(erro);
+    return null;
   }
 }
 
+function formatarUSD(valor) {
+  return `$${valor.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
 
-function adicionaNoHistorico(texto) {
-  const li = document.createElement("li");
-  li.textContent = `${new Date().toLocaleString()} — ${texto}`;
-  historyList.prepend(li);
-
-
-  const itens = Array.from(historyList.querySelectorAll("li")).map(
-    (li) => li.textContent
+function atualizarListaMoedas(dados, filtro = '') {
+  listaMoedasEl.innerHTML = '';
+  const filtrados = dados.filter(({ name, symbol }) =>
+    name.toLowerCase().includes(filtro.toLowerCase()) || symbol.toLowerCase().includes(filtro.toLowerCase())
   );
 
+  filtrados.forEach(({ id, symbol, name, current_price }) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${symbol.toUpperCase()} - ${name}</span> <span>${formatarUSD(current_price)}</span>`;
+    li.addEventListener('click', () => carregarGrafico(id, symbol.toUpperCase()));
+    listaMoedasEl.appendChild(li);
+  });
+}
 
-  if (itens.length > 10) {
-    historyList.removeChild(historyList.lastChild);
-    itens.pop();
+async function carregarGrafico(idMoeda, simboloMoeda) {
+  const dadosHistoricos = await obterDadosHistoricos(idMoeda);
+  if (!dadosHistoricos) return;
+
+  const labels = dadosHistoricos.prices.map(([timestamp]) => {
+    const data = new Date(timestamp);
+    return data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+  });
+
+  const precos = dadosHistoricos.prices.map(([, preco]) => preco);
+
+  if (graficoLinha) {
+    graficoLinha.data.labels = labels;
+    graficoLinha.data.datasets[0].data = precos;
+    graficoLinha.data.datasets[0].label = `${simboloMoeda} (USD)`;
+    graficoLinha.update();
+  } else {
+    graficoLinha = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: `${simboloMoeda} (USD)`,
+          data: precos,
+          borderColor: '#4f6ef7',
+          backgroundColor: 'rgba(79,110,247,0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#f5f6fa' } }
+        },
+        scales: {
+          x: { ticks: { color: '#a4a7b7' }, grid: { color: '#2f3249' } },
+          y: { ticks: { color: '#a4a7b7' }, grid: { color: '#2f3249' } }
+        }
+      }
+    });
   }
-
-  salvaHistorico(itens);
 }
 
-
-function trocaMoedas() {
-  const temp = moedaOrigem.value;
-  moedaOrigem.value = moedaDestino.value;
-  moedaDestino.value = temp;
-}
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  fazAConversao();
-});
-
-btnInvert.addEventListener("click", trocaMoedas);
-
-
-async function fazAConversao() {
-  const valor = parseFloat(valorInput.value);
-  if (!valor || valor <= 0) {
-    resultado.textContent = "Coloca aí um valor válido, por favor 😉";
+async function iniciar() {
+  const dados = await obterDadosMercado();
+  if (!dados.length) {
+    // Como removemos o painel de estatísticas, mostramos o erro aqui na lista:
+    listaMoedasEl.innerHTML = '<li>Não foi possível carregar dados.</li>';
     return;
   }
 
-  btnConverter.disabled = true;
-  btnConverter.textContent = "Convertendo...";
-
-  try {
-    const res = await fetch(API_BASE + moedaOrigem.value);
-    const dados = await res.json();
-
-    const taxa = dados.rates[moedaDestino.value];
-    if (!taxa) {
-      resultado.textContent = "Moeda de destino inválida 😕";
-      return;
-    }
-
-    const convertido = valor * taxa;
-
-    resultado.textContent = `${valor} ${moedaOrigem.value} = ${new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: moedaDestino.value,
-    }).format(convertido)}`;
-
-    infoTaxa.textContent = `1 ${moedaOrigem.value} vale ${taxa.toFixed(
-      4
-    )} ${moedaDestino.value} (dados de ${dados.date})`;
-
-    adicionaNoHistorico(`${valor} ${moedaOrigem.value} → ${moedaDestino.value} = ${convertido.toFixed(4)}`);
-  } catch (e) {
-    resultado.textContent = "Ops, algo deu errado na conversão 😬";
-  } finally {
-    btnConverter.disabled = false;
-    btnConverter.textContent = "Converter";
-  }
+  atualizarListaMoedas(dados);
+  carregarGrafico(dados[0].id, dados[0].symbol.toUpperCase());
 }
 
+let tempoDebounce;
+filtroMoedas.addEventListener('input', e => {
+  clearTimeout(tempoDebounce);
+  tempoDebounce = setTimeout(() => {
+    atualizarListaMoedas(dadosMercado, e.target.value);
+  }, 300);
+});
 
-carregaAsMoedas();
+iniciar();
