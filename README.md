@@ -4,6 +4,16 @@
 
 BitScope is a clean dashboard built to practice working with APIs.
 
+
+<p align="">
+  <a href="https://ana-alves-santos.github.io/crypto-currency/"target="_blank">
+   click here to test
+  </a>
+</p>
+
+
+
+
 ![alt text](image.png)
 
 ## ✨ Features
