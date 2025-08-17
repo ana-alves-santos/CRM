@@ -2,7 +2,7 @@
 
 ## 📝 Description
 
-BitScope is a clean dashboard built to practice working with APIs.
+dashboard built to practice working with APIs.
 
 
 <p align="">
