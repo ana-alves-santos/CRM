@@ -1,6 +1,4 @@
-# 📈 BitScope - Cryptocurrency
-
-## 📝 Description
+# 📈 Cryptocurrency
 
 dashboard built to practice working with APIs.
 
